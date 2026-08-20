@@ -1,6 +1,6 @@
 # CAS External Foundations
 
-Private Swift package containing reusable Creative App Solutions Foundation, SwiftUI, UIKit, StoreKit, networking, file, formatting, and utility code.
+Public Swift package containing reusable Creative App Solutions Foundation, SwiftUI, UIKit, StoreKit, networking, file, formatting, and utility code.
 
 ## Requirements
 
@@ -11,13 +11,17 @@ Private Swift package containing reusable Creative App Solutions Foundation, Swi
 
 ## Add to an Xcode project
 
-In Xcode, choose **File > Add Package Dependencies**, enter this repository's HTTPS URL, and add the `CASExternalFoundations` library product to the required application targets.
+In Xcode, choose **File > Add Package Dependencies**, enter the public repository URL below, select the desired version rule, and add the `CASExternalFoundations` library product to the required application targets.
+
+```text
+https://github.com/KMessina1/CAS-External-Foundations.git
+```
 
 ```swift
 import CASExternalFoundations
 ```
 
-Because this repository is private, Xcode must have access to the GitHub account that owns or can read it.
+No GitHub account or private-repository authentication is required to download this public package.
 
 ## Local development
 
@@ -25,4 +29,4 @@ Add this folder as a local package to override the remote dependency while devel
 
 ## License
 
-©2026 Creative App Solutions, LLC. All Rights Reserved. Private and proprietary.
+©2026 Creative App Solutions, LLC. All Rights Reserved. The source is publicly viewable, but no permission to copy, modify, or redistribute it is granted except as expressly authorized by Creative App Solutions, LLC.
