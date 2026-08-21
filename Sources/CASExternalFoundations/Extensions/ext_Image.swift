@@ -2,8 +2,8 @@
      File: ext_Image.swift
    Author: Kevin Messina
   Created: 6/8/24
- Modified: 08/20/2026 09:00 PM EDT
-  Version: 2
+ Modified: 08/21/2026 03:36 PM EDT
+  Version: 3
    Source: CODEX: (GPT-5) 🤖AI Code a portion or all of this code.
  
 ©2026 Creative App Solutions, LLC. - All Rights Reserved.
@@ -184,4 +184,28 @@ public protocol ImageModifier {
     
     /// Modify an image by applying any modifications into `some View`
     func body(image: Image) -> Self.Body
+}
+
+public enum Crop: Equatable {
+    case circle
+    case square
+    case rectangle
+    case custom(CGSize)
+
+    public func name() -> String {
+        switch self {
+        case .circle: return "Circle"
+        case .square: return "Square"
+        case .rectangle: return "Rectangle"
+        case .custom(let size): return "Custom \(Int(size.width))x\(Int(size.height))"
+        }
+    }
+
+    public func size() -> CGSize {
+        switch self {
+        case .circle, .square: return CGSize(width: 300, height: 300)
+        case .rectangle: return CGSize(width: 300, height: 500)
+        case .custom(let size): return size
+        }
+    }
 }
