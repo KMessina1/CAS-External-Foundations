@@ -11,9 +11,8 @@
 NOTES:
 -------------------------------------------------------------------------------------------------------------------------*/
 
-import Foundation
-import Swift
 import SwiftUI
+import CASExternalFoundations
 
 /// Alias to logFileFunctionLine() function that returns the location of the place in your code that the call was made from.
 /// - Parameters:
@@ -66,54 +65,54 @@ public final class SimPrint {
         API,API_Weather,API_Location,API_GeoLocation
     }
 
-    public enum DBType { case success,warning,error,info,skipped }
-
-    public enum DBAction:String {
-        case fetchAll = "FetchAll"
-        case fetchOne = "FetchOne"
-        case fetchCount = "FetchCount"
-        case update = "Update"
-        case delete = "Delete"
-        case alreadyExists = "AlreadyExists"
-        case insert = "Insert"
-        case upsert = "Upsert"
-        case migrate = "Migrate"
-        case cloudRead = "cloud: Read"
-        case cloudWrite = "cloud: Write"
-        case cloudDelete = "cloud: Delete"
-    }
-
-    public enum DBMigrationAction:String {
-        case insert = "Insert"
-        case upsert = "Upsert"
-        case alter = "Alter"
-        case delete = "Delete"
-        case drop = "Drop"
-        case create = "Create"
-        case rename = "Rename"
-        case add = "Add"
-        case copy = "Copy"
-        case update = "Update"
-        case exists = "Exists"
-        case migration = "Migration"
-        case replace = "Replace"
-        case skip = "Skip"
-    }
-
-    public enum DBMigrationItem:String {
-        case table = "Table"
-        case record = "Record"
-        case column = "Columns"
-        case none = ""
-    }
-
-    public enum DBMigrationIssues:String {
-        case duplicate = "Duplicate (Already exists)"
-        case exists = "Exists as named"
-        case notFound = "Not Found"
-        case none = ""
-        case error = "Error"
-    }
+//    public enum DBType { case success,warning,error,info,skipped }
+//
+//    public enum DBAction:String {
+//        case fetchAll = "FetchAll"
+//        case fetchOne = "FetchOne"
+//        case fetchCount = "FetchCount"
+//        case update = "Update"
+//        case delete = "Delete"
+//        case alreadyExists = "AlreadyExists"
+//        case insert = "Insert"
+//        case upsert = "Upsert"
+//        case migrate = "Migrate"
+//        case cloudRead = "cloud: Read"
+//        case cloudWrite = "cloud: Write"
+//        case cloudDelete = "cloud: Delete"
+//    }
+//
+//    public enum DBMigrationAction:String {
+//        case insert = "Insert"
+//        case upsert = "Upsert"
+//        case alter = "Alter"
+//        case delete = "Delete"
+//        case drop = "Drop"
+//        case create = "Create"
+//        case rename = "Rename"
+//        case add = "Add"
+//        case copy = "Copy"
+//        case update = "Update"
+//        case exists = "Exists"
+//        case migration = "Migration"
+//        case replace = "Replace"
+//        case skip = "Skip"
+//    }
+//
+//    public enum DBMigrationItem:String {
+//        case table = "Table"
+//        case record = "Record"
+//        case column = "Columns"
+//        case none = ""
+//    }
+//
+//    public enum DBMigrationIssues:String {
+//        case duplicate = "Duplicate (Already exists)"
+//        case exists = "Exists as named"
+//        case notFound = "Not Found"
+//        case none = ""
+//        case error = "Error"
+//    }
 
     private init() {}
 
@@ -143,67 +142,6 @@ public final class SimPrint {
         }
 
         return txt
-    }
-
-    public static func DBMigration(
-        type: DBType,
-        action: DBMigrationAction,
-        item: DBMigrationItem,
-        issue: DBMigrationIssues,
-        table: String = "",
-        columns: String = "",
-        msg: String,
-        log: String,
-        migrationID: String
-    ) {
-        var txt = ""
-
-        switch type {
-            case .success: txt.append("DB MIGRATION: ---->🗄✅ DB Success; ")
-            case .warning: txt.append("DB MIGRATION: ---->🗄⚠️ DB Warning; ")
-            case .error: txt.append("DB MIGRATION: ---->🗄❌ DB Error; ")
-            case .info: txt.append("DB MIGRATION: ---->🗄ℹ️ dbTable info; ")
-            case .skipped: txt.append("DB MIGRATION: ---->🗄➥ DB Skipped; ")
-        }
-
-        switch action {
-            case .alter: txt.append("Altering")
-            case .delete: txt.append("Deleting")
-            case .insert: txt.append("Inserting")
-            case .upsert: txt.append("Upserting")
-            case .drop: txt.append("Dropping")
-            case .create: txt.append("Creating")
-            case .rename: txt.append("Renaming")
-            case .add: txt.append("Adding")
-            case .copy: txt.append("Copying")
-            case .update: txt.append("Updating")
-            case .exists: txt.append("Exists")
-            case .migration: txt.append("Migrating")
-            case .replace: txt.append("Replacing")
-            case .skip: txt.append("Skipping")
-        }
-
-        switch item {
-            case .table: txt.append(" table")
-            case .record: txt.append(" record")
-            case .column: txt.append(" column")
-            case .none: txt.append(" n/a")
-        }
-
-        switch issue {
-            case .duplicate: txt.append(", DUPLICATE: Already exists in table/database.")
-            case .notFound: txt.append(", NOT FOUND in table/database.")
-            case .none: txt.append("")
-            case .error: txt.append(", Error.")
-            case .exists: txt.append(", EXISTS: Already exists as named.")
-        }
-
-        txt.append(", Msg: \(msg)")
-        txt.append(log)
-
-        txt.append(", DB Migration for ID: \(migrationID)")
-
-        print("\(txt)\n")
     }
 
     public static func Info(
@@ -296,73 +234,4 @@ public final class SimPrint {
 
         print(txt)
     }
-
-    public static func DB<Database>(
-        type:DBType,
-        action:DBAction,
-        found:Int = 0,
-        table:String,
-        db: Database,
-        query:String = "",
-        msg:String = "",
-        file:String = "",
-        function:String = "",
-        line:Int = -1,
-        log:String = "",
-        LF_Start:Bool = false,
-        LF_End:Bool = false
-    ) {
-        if (deviceIs.CanvasPreview) {
-            return
-        }
-
-        if ((displayType != .all) && (type != .error)) {
-            return
-        }
-
-        var txt:String = ""
-        var recordCount = found
-
-        if LF_Start {
-            txt.append("\n")
-        }
-
-        switch type {
-            case .success: txt.append("🗄✅ DB Success; ")
-            case .warning: txt.append("🗄⚠️ DB Warning; ")
-            case .info: txt.append("🗄ℹ️ dbTable info; ")
-            case .error:
-                txt.append("🗄❌ DB Error; ")
-                recordCount = 0
-            case .skipped: txt.append("🗄➥ DB Skipped; ")
-        }
-
-        txt.append("\(action.rawValue) from \(table) in \(String(describing: db))")
-
-        switch action {
-            case .fetchAll,.fetchOne,.fetchCount: txt.append(", Found \(recordCount) records. ")
-            case .update: txt.append(", Updating 1 record. ")
-            case .delete: txt.append(", Deleting 1 record. ")
-            case .insert: txt.append(", Inserting 1 record. ")
-            case .upsert: txt.append(", Upserting 1 record. ")
-            case .migrate: txt.append(", migrating database. ")
-            case .alreadyExists: txt.append(", DUPLCIATE: Already exists in table/database. ")
-            case .cloudRead: txt.append(", Reading 1 Record. ")
-            case .cloudWrite: txt.append(", Writing 1 Record. ")
-            case .cloudDelete: txt.append(", Deleting 1 Record. ")
-        }
-
-        if !msg.isEmpty {
-            txt.append(msg)
-        }
-
-        txt.append("Query: \(String(describing: query.isEmpty ?"n/a" :query))")
-        txt.append(log)
-
-        if LF_End {
-            txt.append("\n")
-        }
-
-        print(txt)
-    }
-}
+  }
