@@ -2,27 +2,14 @@
      File: lib_Files.swift
    Author: Kevin Messina
   Created: 7/1/23
- Modified: 08/20/2026 04:56 PM EDT
-  Version: 2
+ Modified: 08/20/2026 08:04 PM EDT
+  Version: 3
    Source: CODEX: (GPT-5) 🤖AI Code a portion or all of this code.
  
 ©2026 Creative App Solutions, LLC. - All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------
 NOTES:
 -------------------------------------------------------------------------------------------------------------------------*/
-
-/*--------------------------------------------------------------------------------------------------------------------------
-    File: lib_Files.swift
-  Author: Kevin Messina
- Created: 7/1/23
-Modified:
- 
-©2023-2026 Creative App Solutions, LLC. - All Rights Reserved.
-----------------------------------------------------------------------------------------------------------------------------
-NOTES:
- 
-2025_05_03 - Added getFileAttribs() to return dictionary of keys.
---------------------------------------------------------------------------------------------------------------------------*/
 
 import Foundation
 
@@ -123,9 +110,9 @@ public struct Files {
         if !Files().exists(filename: fileName, in: to) {
             do {
                 try FM.copyItem(atPath: fromURL.path, toPath: toURL.path)
-                simPrint("\(fileName.uppercased()) copied from bundle to \(to) directory.",action: .success,log: LFFL())
+                SimPrint.Info("\(fileName.uppercased()) copied from bundle to \(to) directory.",action: .success,log: LFFL())
             } catch {
-                simPrint("\( fileName.uppercased() ) could not be copied from bundle to \( to ) directory.",
+                SimPrint.Info("\( fileName.uppercased() ) could not be copied from bundle to \( to ) directory.",
                          action: .error,
                          errorMsg:error.localizedDescription,
                          log: LFFL()
@@ -164,7 +151,7 @@ public struct Files {
         do {
             try FM.moveItem(at: fromURL, to: toURL)
         } catch let error as NSError {
-            simPrint(
+            SimPrint.Info(
                 "File could not be renamed/moved from \( fromURL.absoluteString ) to \( toURL.absoluteString ).",
                 action: .error,
                 errorMsg:error.localizedDescription,
@@ -239,10 +226,10 @@ public struct Files {
         
         do {
             try FileManager.default.removeItem(atPath: documentsURL.path)
-            simPrint("\( fileName?.uppercased() ?? "file" ) deleted from \( directory ) directory.",action: .success, log: LFFL())
+            SimPrint.Info("\( fileName?.uppercased() ?? "file" ) deleted from \( directory ) directory.",action: .success, log: LFFL())
             return true
         } catch {
-            simPrint("\( fileName?.uppercased() ?? "file" ) could not be deleted from \( directory ) directory.",action: .error, errorMsg:error.localizedDescription, log: LFFL())
+            SimPrint.Info("\( fileName?.uppercased() ?? "file" ) could not be deleted from \( directory ) directory.",action: .error, errorMsg:error.localizedDescription, log: LFFL())
             return false
         }
     }
@@ -299,11 +286,11 @@ public struct Files {
                 try FileManager.default.createDirectory(atPath: folderURL.path, withIntermediateDirectories: true, attributes: nil)
                 
                 let results = Files().exists(filename: "/"+folderName, in: directory)
-                simPrint("\( folderName.uppercased()) created in documents directory.",action: .success, log: LFFL())
+                SimPrint.Info("\( folderName.uppercased()) created in documents directory.",action: .success, log: LFFL())
                 
                 return results
             } catch {
-                simPrint("\( folderName.uppercased() ) could not be created in documents directory.",action: .error, errorMsg:error.localizedDescription, log: LFFL())
+                SimPrint.Info("\( folderName.uppercased() ) could not be created in documents directory.",action: .error, errorMsg:error.localizedDescription, log: LFFL())
                 fatalError("Couldn't create the \( folderName.uppercased() ) folder in documents directory.")
             }
         }
@@ -315,7 +302,7 @@ public struct Files {
         do {
             return try FileManager.default.contentsOfDirectory(atPath: path)
         } catch {
-            simPrint("\( path.uppercased() ) could not send contents in directory.",action: .error, errorMsg:error.localizedDescription, log: LFFL())
+            SimPrint.Info("\( path.uppercased() ) could not send contents in directory.",action: .error, errorMsg:error.localizedDescription, log: LFFL())
             return []
         }
     }
@@ -332,7 +319,7 @@ public struct Files {
         do {
             return try FileManager.default.contentsOfDirectory(atPath: directoryPath)
         } catch {
-            simPrint("\( directoryPath.uppercased() ) could not send contents in directory.",action: .error, errorMsg:error.localizedDescription, log: LFFL())
+            SimPrint.Info("\( directoryPath.uppercased() ) could not send contents in directory.",action: .error, errorMsg:error.localizedDescription, log: LFFL())
             return []
         }
     }
@@ -353,7 +340,7 @@ public struct Files {
                 filenames.append(fileURL.path)
             }
         } catch  {
-            simPrint("\( documentsUrl.path.uppercased() ) could not send contents in directory.",action: .error, errorMsg:error.localizedDescription, log: LFFL())
+            SimPrint.Info("\( documentsUrl.path.uppercased() ) could not send contents in directory.",action: .error, errorMsg:error.localizedDescription, log: LFFL())
         }
         
         return (filenames: filenames, count: filenames.count)

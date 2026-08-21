@@ -2,8 +2,8 @@
      File: lib_AppInfo.swift
    Author: Kevin Messina
   Created: 7/1/23
- Modified: 08/20/2026 04:56 PM EDT
-  Version: 2
+ Modified: 08/20/2026 08:04 PM EDT
+  Version: 3
    Source: CODEX: (GPT-5) 🤖AI Code a portion or all of this code.
  
 ©2026 Creative App Solutions, LLC. - All Rights Reserved.
@@ -388,22 +388,22 @@ public struct AppInfo {
         let repeats = 100
         
         if !runtimeIs().Release {
-            simPrint(String(repeating: "=", count: repeats), action: .noPrefix,log: "")
+            SimPrint.Info(String(repeating: "=", count: repeats), action: .noPrefix,log: "")
             /* App Info */
-            simPrint("   App Name: \( AppInfo.appName )", action: .noPrefix,log: "")
-            simPrint("    Version: \( AppInfo.version )", action: .noPrefix,log: "")
-            simPrint("      Build: (\( AppInfo.build ))", action: .noPrefix,log: "")
-            simPrint("    Company: \( returnCompanyInfo().name )", action: .noPrefix,log: "")
-            simPrint("     Device: \( UIDevice.Family().typeIs() )", action: .noPrefix,log: "")
-            simPrint("Environment: \( UIDevice.Family().environmentIs() )", action: .noPrefix,log: "")
-            simPrint("    RunTime: \( runtimeIs().runtimeType() )", action: .noPrefix,log: "")
-            simPrint("  Execution: \( Date().formattedAs(Date.formats.EEEE_MMMM_d_yyyy_at_hmm_a) )", action: .noPrefix,log: "")
-            simPrint(String(repeating: "-", count: repeats), action: .noPrefix,log: "")
-            simPrint("    Library: \(Files().getPathForFilename("",in: .libDir).path)", action: .folder,log: "")
-            simPrint(" User Def's: \(Files().getPathForFilename("",in: .libDir).path)Preferences", action: .folder,log: "")
-            simPrint("     Caches: \(Files().getPathForFilename("",in: .cacheDir).path)", action: .folder,log: "")
-            simPrint("  Documents: \(Files().getPathForFilename("",in: .docsDir).path)", action: .folder,log: "")
-            simPrint(String(repeating: "=",  count: repeats), action: .noPrefix,log: "",LF_End: true)
+            SimPrint.Info("   App Name: \( AppInfo.appName )", action: .noPrefix,log: "")
+            SimPrint.Info("    Version: \( AppInfo.version )", action: .noPrefix,log: "")
+            SimPrint.Info("      Build: (\( AppInfo.build ))", action: .noPrefix,log: "")
+            SimPrint.Info("    Company: \( returnCompanyInfo().name )", action: .noPrefix,log: "")
+            SimPrint.Info("     Device: \( UIDevice.Family().typeIs() )", action: .noPrefix,log: "")
+            SimPrint.Info("Environment: \( UIDevice.Family().environmentIs() )", action: .noPrefix,log: "")
+            SimPrint.Info("    RunTime: \( runtimeIs().runtimeType() )", action: .noPrefix,log: "")
+            SimPrint.Info("  Execution: \( Date().formattedAs(Date.formats.EEEE_MMMM_d_yyyy_at_hmm_a) )", action: .noPrefix,log: "")
+            SimPrint.Info(String(repeating: "-", count: repeats), action: .noPrefix,log: "")
+            SimPrint.Info("    Library: \(Files().getPathForFilename("",in: .libDir).path)", action: .folder,log: "")
+            SimPrint.Info(" User Def's: \(Files().getPathForFilename("",in: .libDir).path)Preferences", action: .folder,log: "")
+            SimPrint.Info("     Caches: \(Files().getPathForFilename("",in: .cacheDir).path)", action: .folder,log: "")
+            SimPrint.Info("  Documents: \(Files().getPathForFilename("",in: .docsDir).path)", action: .folder,log: "")
+            SimPrint.Info(String(repeating: "=",  count: repeats), action: .noPrefix,log: "",LF_End: true)
         }
     }
 }

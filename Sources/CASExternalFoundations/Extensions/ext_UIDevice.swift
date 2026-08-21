@@ -2,8 +2,8 @@
      File: ext_UIDevice.swift
    Author: Kevin Messina
   Created: 2/6/22
- Modified: 08/20/2026 04:43 PM EDT
-  Version: 1
+ Modified: 08/20/2026 08:54 PM EDT
+  Version: 2
    Source: CODEX: (GPT-5) 🤖AI Code a portion or all of this code.
  
 ©2026 Creative App Solutions, LLC. - All Rights Reserved.
@@ -11,17 +11,6 @@
 NOTES:
 -------------------------------------------------------------------------------------------------------------------------*/
 
-
-/*--------------------------------------------------------------------------------------------------------------------------
-    File: ext_UIDevice.swift
-  Author: Kevin Messina
- Created: 2/6/22
-Modified:
- 
-©2022-2026 Creative App Solutions, LLC. - All Rights Reserved.
-----------------------------------------------------------------------------------------------------------------------------
-NOTES:
---------------------------------------------------------------------------------------------------------------------------*/
 
 import Foundation
 import UIKit
@@ -65,6 +54,8 @@ public extension UIDevice {
     static let isZoomed = UIScreen().isZoomed
     
     struct Family {
+        public init() {}
+
         // environment Mode
         public 
         // environment Mode

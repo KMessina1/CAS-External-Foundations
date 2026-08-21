@@ -2,28 +2,14 @@
      File: AppRating.swift
    Author: Kevin Messina
   Created: Jan 7, 2020
- Modified: 08/20/2026 04:56 PM EDT
-  Version: 2
+ Modified: 08/20/2026 08:04 PM EDT
+  Version: 3
    Source: CODEX: (GPT-5) 🤖AI Code a portion or all of this code.
  
 ©2026 Creative App Solutions, LLC. - All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------
 NOTES:
 -------------------------------------------------------------------------------------------------------------------------*/
-
-/*--------------------------------------------------------------------------------------------------------------------------
-    File: AppRating.swift
-  Author: Kevin Messina
- Created: Jan 7, 2020
-Modified: May 14, 2024
-
-©2020-2026 Creative App Solutions, LLC. - All Rights Reserved.
-----------------------------------------------------------------------------------------------------------------------------
-NOTES:
-
-2024/05/14 - Converted to SwiftUI 5.9/iOS 17
-2020/11/02 - Converted to SwiftUI
---------------------------------------------------------------------------------------------------------------------------*/
 
 import Foundation
 import SwiftUI
@@ -62,11 +48,11 @@ public struct AppRating {
     
     @MainActor public 
     func showReviewIfMilestoneReached(forceShowForTest:Bool) -> Void {
-        simPrint("AppRating: Show review", action: .detail, log: LFFL())
+        SimPrint.Info("AppRating: Show review", action: .detail, log: LFFL())
 
         if (forceShowForTest && !runtimeIs().Release) {
             displayReview()
-            simPrint("AppRating: Forced Review from AppDelegate requested from AppStore", action: .detail_1, log: LFFL())
+            SimPrint.Info("AppRating: Forced Review from AppDelegate requested from AppStore", action: .detail_1, log: LFFL())
 
             return
         }
@@ -79,17 +65,17 @@ public struct AppRating {
         let okToShowRatingRequest: Bool = isNewVersion && hasReachedTotalEventsLimit
 
         if okToShowRatingRequest {
-            simPrint("AppRating: Review requested from AppStore", action: .detail, log: LFFL())
+            SimPrint.Info("AppRating: Review requested from AppStore", action: .detail, log: LFFL())
             displayReview()
             eventCount_1 = 0
             eventCount_2 = 0
             ratingLastBuildVersion = currentVersion
-            simPrint("AppRating: Milestone count reset to 0", action: .detail_1, log: LFFL())
+            SimPrint.Info("AppRating: Milestone count reset to 0", action: .detail_1, log: LFFL())
         } else {
             eventCount_1 += 1
             eventCount_2 += 1
-            simPrint("AppRating: Milestone counts incremented.",action: .detail_2, log: LFFL())
-            simPrint("AppRating: Milestone counts are not enough for App Store Review.",action: .detail_2, log: LFFL())
+            SimPrint.Info("AppRating: Milestone counts incremented.",action: .detail_2, log: LFFL())
+            SimPrint.Info("AppRating: Milestone counts are not enough for App Store Review.",action: .detail_2, log: LFFL())
         }
     }
 }

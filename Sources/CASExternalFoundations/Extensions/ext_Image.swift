@@ -2,27 +2,14 @@
      File: ext_Image.swift
    Author: Kevin Messina
   Created: 6/8/24
- Modified: 08/20/2026 04:43 PM EDT
-  Version: 1
+ Modified: 08/20/2026 09:00 PM EDT
+  Version: 2
    Source: CODEX: (GPT-5) 🤖AI Code a portion or all of this code.
  
 ©2026 Creative App Solutions, LLC. - All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------
 NOTES:
 -------------------------------------------------------------------------------------------------------------------------*/
-
-/*--------------------------------------------------------------------------------------------------------------------------
-    File: ext_Image.swift
-  Author: Kevin Messina
- Created: 6/8/24
-Modified:
- 
-©2024-2026 Creative App Solutions, LLC. - All Rights Reserved.
-----------------------------------------------------------------------------------------------------------------------------
-NOTES:
- 
-2024_11_03  Added Image Modifier capability
---------------------------------------------------------------------------------------------------------------------------*/
 
 import Foundation
 import SwiftUI
@@ -46,6 +33,18 @@ public extension Image {
         public var render: Image.TemplateRenderingMode = .template
         public var align: Alignment = .center
         public var color: Color = .white
+
+        public init(
+            size: CGFloat = deviceIs.Pad ? 60 : 30,
+            render: Image.TemplateRenderingMode = .template,
+            align: Alignment = .center,
+            color: Color = .white
+        ) {
+            self.size = size
+            self.render = render
+            self.align = align
+            self.color = color
+        }
         
         public func body(image: Image) -> some View {
             image
@@ -62,6 +61,8 @@ public extension Image {
     }
     
     struct resizableAndScaledToFit: ImageModifier {
+        public init() {}
+
         public func body(image: Image) -> some View {
             image
                 .resizable()
@@ -70,6 +71,8 @@ public extension Image {
     }
     
     struct resizableAndScaledToFill: ImageModifier {
+        public init() {}
+
         public func body(image: Image) -> some View {
             image
                 .resizable()
