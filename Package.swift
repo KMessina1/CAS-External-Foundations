@@ -1,10 +1,10 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 /*-------------------------------------------------------------------------------------------------------------------------
      File: Package.swift
    Author: Kevin Messina
   Created: 8/20/26
- Modified: 08/20/2026 04:43 PM EDT
-  Version: 1
+ Modified: 08/23/2026 03:50 PM EDT
+  Version: 2
    Source: CODEX: (GPT-5) 🤖AI Code a portion or all of this code.
  
 ©2026 Creative App Solutions, LLC. - All Rights Reserved.
@@ -17,8 +17,9 @@ import PackageDescription
 let package = Package(
     name: "CAS-External-Foundations",
     platforms: [
-        .iOS(.v17),
-        .macCatalyst(.v17)
+        .iOS(.v26),
+        .macCatalyst(.v26),
+        .macOS(.v26)
     ],
     products: [
         .library(
