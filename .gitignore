@@ -1,6 +1,7 @@
 .DS_Store
 Icon?
 gitFolder.png
+Package.resolved
 .build/
 .swiftpm/
 DerivedData/
