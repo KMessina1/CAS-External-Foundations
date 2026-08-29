@@ -2,8 +2,8 @@
      File: lib_AppInfo.swift
    Author: Kevin Messina
   Created: 7/1/23
- Modified: 08/20/2026 08:04 PM EDT
-  Version: 3
+ Modified: 08/29/2026 02:44 PM EDT
+  Version: 4
    Source: CODEX: (GPT-5) 🤖AI Code a portion or all of this code.
  
 ©2026 Creative App Solutions, LLC. - All Rights Reserved.
@@ -166,7 +166,7 @@ public struct AppInfo {
 //    static let dataBase1 = "BT_Data.db"
     public 
 //    static let dataBase1 = "BT_Data.db"
-    static let logo = "Logo_Report"
+    static let logo = "appLogo_Report"
     
     // MARK: - *** DEVELOPER INFO ***
     public struct Developer {
