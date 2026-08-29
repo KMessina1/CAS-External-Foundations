@@ -30,7 +30,7 @@ public extension UIImage {
     func get(_ name:String) -> UIImage {
         let systemImg: UIImage? = UIImage(systemName: name)
         let fileImg: UIImage? = UIImage(named: name)
-        let defaultImg: UIImage? = UIImage(named: "NoPhotoText")
+        let defaultImg: UIImage? = UIImage(systemName: "photo.badge.exclamationmark")
 
         if systemImg != nil {
             return systemImg!
@@ -43,5 +43,4 @@ public extension UIImage {
         }
     }
 }
-
 

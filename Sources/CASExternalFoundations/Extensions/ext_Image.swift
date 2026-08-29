@@ -116,7 +116,7 @@ public extension Image {
         if let img = UIImage(contentsOfFile: Files().returnPathForFilename(imgName, in: dir).path) {
             return img
         }else{
-            return UIImage(named: "NoPhotoText")!
+            return UIImage(systemName: "photo.badge.exclamationmark") ?? UIImage()
         }
     }
 
