@@ -23,6 +23,12 @@ import CASExternalFoundations
 
 No GitHub account or private-repository authentication is required to download this public package.
 
+## What's New
+
+### 1.1.8
+
+Fixed image loader fallback issues.
+
 ## Local development
 
 Add this folder as a local package to override the remote dependency while developing the package and an application together. Commit and push package changes here, then update the package dependency in each consuming application.
