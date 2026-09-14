@@ -2,8 +2,8 @@
      File: ext_String.swift
    Author: Kevin Messina
   Created: Jan 5, 2020
- Modified: 08/20/2026 04:43 PM EDT
-  Version: 1
+ Modified: 09/14/2026 02:03 PM EDT
+  Version: 2
    Source: CODEX: (GPT-5) 🤖AI Code a portion or all of this code.
  
 ©2026 Creative App Solutions, LLC. - All Rights Reserved.
@@ -470,6 +470,18 @@ public extension String {
     }
 
     // MARK: Convert String to Date
+    func toConvertedString(from: String, to: String) -> String {
+        guard
+            let newDate: Date = self.toDate(format: from)
+        else {
+            return dashesTxt
+        }
+
+        let newDateTxt: String = newDate.formattedAs(to)
+
+        return newDateTxt
+    }
+
     func toConvertedString(from: Date.Formats, to: Date.Formats) -> String {
         guard
             let newDate: Date = self.toDate(format: from.rawValue)
@@ -738,4 +750,3 @@ public extension String {
         return formattedString
     }
 }
-
