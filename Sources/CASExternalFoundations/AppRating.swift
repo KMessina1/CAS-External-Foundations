@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------------------------------------------------------------------
      File: AppRating.swift
    Author: Kevin Messina
-  Created: Jan 7, 2020
- Modified: 08/20/2026 08:04 PM EDT
-  Version: 3
+  Created: 1/7/20
+ Modified: 10/27/2026 03:52 PM EDT
+  Version: 4
    Source: CODEX: (GPT-5) 🤖AI Code a portion or all of this code.
  
 ©2026 Creative App Solutions, LLC. - All Rights Reserved.
@@ -14,68 +14,99 @@ NOTES:
 import Foundation
 import SwiftUI
 import StoreKit
+#if canImport(UIKit)
+import UIKit
+#endif
 
-/// Functions relating to StoreKit App Rating functionality.
-public struct AppRating {
-    public var minimumMilestoneCount_Event1:Int = 10
-    public var minimumMilestoneCount_Event2:Int = 5
+/// Launch eligibility and review request state. StoreKit does not report the user's response.
+@MainActor public enum AppRating {
+    private static let launchesKey = "app.rating.launchCount"
+    private static let lastLaunchKey = "app.rating.lastRequestLaunch"
+    private static let lastDateKey = "app.rating.lastRequestDate"
+    private static var recordedLaunch = false
+    private static var requestedThisLaunch = false
+    private static var forceDisplayForTesting = false
 
-    @AppStorage(KeyNames.App.Rating.MilestoneCount.event1)  public var eventCount_1: Int = 0
-    @AppStorage(KeyNames.App.Rating.MilestoneCount.event2)  public var eventCount_2: Int = 0
-    @AppStorage(KeyNames.App.Rating.lastBuildVersion)  public var ratingLastBuildVersion: String = "1.0"
+    /// Call once from the app's init. Repeated initialization within this process is ignored.
+    public static func recordLaunch(forceShowForTest: Bool = false) {
+        guard ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] != "1" else { return }
+        guard !recordedLaunch else { return }
+        recordedLaunch = true
+        #if DEBUG
+        forceDisplayForTesting = forceShowForTest
+        #endif
+        let defaults = UserDefaults.standard
+        defaults.set(defaults.integer(forKey: launchesKey) + 1, forKey: launchesKey)
+    }
 
-    public init() {}
+    private static var isEligible: Bool {
+        guard recordedLaunch, !requestedThisLaunch else { return false }
+        if forceDisplayForTesting { return true }
+        let defaults = UserDefaults.standard
+        let launches = defaults.integer(forKey: launchesKey)
+        guard launches - defaults.integer(forKey: lastLaunchKey) >= 10 else { return false }
+        guard let lastDate = defaults.object(forKey: lastDateKey) as? Date else { return true }
+        return Date().timeIntervalSince(lastDate) >= 30 * 24 * 60 * 60
+    }
 
-    @MainActor public 
-    func displayReview() -> Void {
-        if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
-            AppStore.requestReview(in: scene)
-//            SKStoreReviewController.requestReview(in: scene)
+    fileprivate static func requestIfEligible(_ requestReview: RequestReviewAction) {
+        guard isEligible else { return }
+        requestedThisLaunch = true
+        // A debug preview of the prompt must not consume normal request eligibility.
+        if !forceDisplayForTesting {
+            let defaults = UserDefaults.standard
+            defaults.set(defaults.integer(forKey: launchesKey), forKey: lastLaunchKey)
+            defaults.set(Date(), forKey: lastDateKey)
         }
+        requestReview()
     }
-    
-    @ViewBuilder  public func buttonForTestingView() -> some View {
-        Button(action: {
-            AppRating().showReviewIfMilestoneReached(forceShowForTest: true)
-        }, label: {
-            Text("Show App Store Review")
-        })
-        .bold()
-        .foregroundStyle(.white)
-        .buttonStyle(.borderedProminent)
-        .tint(.red)
-    }
-    
-    @MainActor public 
-    func showReviewIfMilestoneReached(forceShowForTest:Bool) -> Void {
-        SimPrint.Info("AppRating: Show review", action: .detail, log: LFFL())
 
-        if (forceShowForTest && !runtimeIs().Release) {
-            displayReview()
-            SimPrint.Info("AppRating: Forced Review from AppDelegate requested from AppStore", action: .detail_1, log: LFFL())
-
+    fileprivate static func waitAndRequest(_ requestReview: RequestReviewAction) async {
+        guard isEligible else { return }
+        do {
+            try await Task.sleep(for: .seconds(2))
+            #if canImport(UIKit)
+            // Allow a dismissing sheet or alert to finish before requesting StoreKit's view.
+            while !Task.isCancelled {
+                let windows = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+                    .filter { $0.activationState == .foregroundActive }.flatMap(\.windows)
+                    .filter { $0.isKeyWindow }
+                if !windows.isEmpty && windows.allSatisfy({ window in
+                    guard let root = window.rootViewController else { return false }
+                    return root.presentedViewController == nil && !root.isBeingDismissed
+                }) { break }
+                try await Task.sleep(for: .milliseconds(500))
+            }
+            #endif
+            try Task.checkCancellation()
+            requestIfEligible(requestReview)
+        } catch is CancellationError {
+            // Readiness changed or Dashboard disappeared; keep eligibility for its next appearance.
+        } catch {
             return
         }
+    }
+}
 
-        let currentVersion = AppInfo.version
-        let isNewVersion: Bool = currentVersion != ratingLastBuildVersion
-        let hasReachedEventLimit_1: Bool = eventCount_1.isMultiple(of: minimumMilestoneCount_Event1)
-        let hasReachedEventLimit_2: Bool = eventCount_2.isMultiple(of: minimumMilestoneCount_Event2)
-        let hasReachedTotalEventsLimit: Bool = hasReachedEventLimit_1 && hasReachedEventLimit_2
-        let okToShowRatingRequest: Bool = isNewVersion && hasReachedTotalEventsLimit
+private struct AppRatingModifier: ViewModifier {
+    @Environment(\.requestReview) private var requestReview
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.isEnabled) private var isEnabled
+    let isReady: Bool
 
-        if okToShowRatingRequest {
-            SimPrint.Info("AppRating: Review requested from AppStore", action: .detail, log: LFFL())
-            displayReview()
-            eventCount_1 = 0
-            eventCount_2 = 0
-            ratingLastBuildVersion = currentVersion
-            SimPrint.Info("AppRating: Milestone count reset to 0", action: .detail_1, log: LFFL())
-        } else {
-            eventCount_1 += 1
-            eventCount_2 += 1
-            SimPrint.Info("AppRating: Milestone counts incremented.",action: .detail_2, log: LFFL())
-            SimPrint.Info("AppRating: Milestone counts are not enough for App Store Review.",action: .detail_2, log: LFFL())
+    private var canRequest: Bool { isReady && isEnabled && scenePhase == .active }
+
+    func body(content: Content) -> some View {
+        content.task(id: canRequest) {
+            guard canRequest else { return }
+            await AppRating.waitAndRequest(requestReview)
         }
+    }
+}
+
+public extension View {
+    /// Attach to the view that owns the review presentation and knows when startup has finished.
+    func appRating(isReady: Bool) -> some View {
+        modifier(AppRatingModifier(isReady: isReady))
     }
 }

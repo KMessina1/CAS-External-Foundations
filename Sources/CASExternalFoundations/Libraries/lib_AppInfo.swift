@@ -2,8 +2,8 @@
      File: lib_AppInfo.swift
    Author: Kevin Messina
   Created: 7/1/23
- Modified: 08/29/2026 02:44 PM EDT
-  Version: 4
+ Modified: 10/27/2026 03:52 PM EDT
+  Version: 5
    Source: CODEX: (GPT-5) 🤖AI Code a portion or all of this code.
  
 ©2026 Creative App Solutions, LLC. - All Rights Reserved.
@@ -84,30 +84,6 @@ public struct KeyNames: RawRepresentable {
         public 
         static let requiresLogin = KeyNames.App(rawValue: "app.requiresLogin").rawValue
 
-        /* App Store Rating */
-        public struct Rating {
-            public var rawValue: String
-
-            public init(rawValue: String) { self.rawValue = rawValue }
-            
-            public 
-            
-            static let lastBuildVersion = KeyNames.App.Rating(rawValue: "app.rating.lastBuildVersion").rawValue
-
-            /* App Store Rating Milestone Counts */
-            public struct MilestoneCount {
-                public var rawValue: String
-
-                public init(rawValue: String) { self.rawValue = rawValue }
-                
-                public 
-                
-                static let event1 = KeyNames.App.Rating.MilestoneCount(rawValue: "app.rating.milestoneCount.inventory").rawValue
-                public 
-                static let event2 = KeyNames.App.Rating.MilestoneCount(rawValue: "app.rating.milestoneCount.rangeSession").rawValue
-            }
-        }
-        
         /* ☁️iCloud Variables */
         public struct Settings {
             public var rawValue: String

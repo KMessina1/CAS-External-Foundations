@@ -25,6 +25,13 @@ No GitHub account or private-repository authentication is required to download t
 
 ## What's New
 
+### 1.1.11
+
+Updated for new AppStore functionality
+
+- Added launch-based App Rating requests with Dashboard readiness, a 10-launch threshold, and a 30-day repeat cooldown.
+- Added a Debug-only force-display option and removed obsolete rating milestone APIs and keys.
+
 ### 1.1.8
 
 Fixed image loader fallback issues.
